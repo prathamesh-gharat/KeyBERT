@@ -64,6 +64,7 @@ class KeyBERT:
     def extract_keywords(
         self,
         docs: Union[str, List[str]],
+        target_docs: Union[str, List[str]],
         candidates: List[str] = None,
         keyphrase_ngram_range: Tuple[int, int] = (1, 1),
         stop_words: Union[str, List[str]] = "english",
@@ -185,7 +186,10 @@ class KeyBERT:
 
         # Extract embeddings
         if doc_embeddings is None:
-            doc_embeddings = self.model.embed(docs)
+            if target_docs is not None:
+                doc_embeddings = self.model.embed(target_docs)
+            else:
+                doc_embeddings = self.model.embed(docs)
         if word_embeddings is None:
             word_embeddings = self.model.embed(words)
 
